@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useEffect, useState } from 'react';
-import { Zap, Target, TrendingUp, Award, Clock, BarChart2 } from 'lucide-react';
+import { Zap, Target, TrendingUp, Award, Clock } from 'lucide-react';
 
 const features = [
   {

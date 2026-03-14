@@ -37,10 +37,10 @@ export default function CTASection() {
             style={{ fontFamily: 'Syne, sans-serif' }}
             className="relative text-4xl sm:text-5xl font-bold text-white mb-4"
           >
-            Ready to Go <span className="gradient-text">Viral?</span>
+            Ready to Edit <span className="gradient-text">Stunning Reels?</span>
           </h2>
-          <p className="relative text-[#94a3b8] text-lg max-w-xl mx-auto mb-10">
-            Book a free 30-minute strategy call with our team. We&apos;ll analyze your brand, identify content opportunities, and map out your Reels growth plan.
+          <p className="relative text-[#94a3b8] text-base sm:text-lg max-w-xl mx-auto mb-10">
+            Book a call to take your brand from zero to max views with our expert editing and content strategy.
           </p>
 
           <div className="relative flex flex-wrap gap-4 justify-center">

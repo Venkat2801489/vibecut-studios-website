@@ -5,7 +5,7 @@ const stats = [
   { number: 5, suffix: 'M+', label: 'Total Views Generated' },
   { number: 50, suffix: '+', label: 'Active Clients' },
   { number: 7, suffix: '+', label: 'Industries Served' },
-  { number: 500, suffix: '+', label: 'Reels Produced' },
+  { number: 50, suffix: '+', label: 'Reels Produced' },
 ];
 
 function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) {

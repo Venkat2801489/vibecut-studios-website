@@ -8,37 +8,31 @@ const steps = [
   {
     icon: Lightbulb,
     title: 'Content Strategy & Planning',
-    desc: 'We deep-dive into your brand, audience, and goals to craft a content roadmap that aligns with trends and drives results.',
     color: '#7c3aed',
   },
   {
     icon: Camera,
     title: 'Professional Shoot',
-    desc: 'Our team handles 3 production types — studio, location, and UGC — tailored to your industry and platform requirements.',
     color: '#9333ea',
   },
   {
     icon: Scissors,
     title: 'High-Quality Editing',
-    desc: 'Expert editing with motion graphics, color grading, captions, music sync, and viral hooks precision-crafted for the Reels algorithm.',
     color: '#c026d3',
   },
   {
     icon: Film,
     title: 'Storyboarding & Scripting',
-    desc: 'Every reel has a narrative arc. We script compelling hooks, story beats, and CTAs that keep viewers watching to the end.',
     color: '#db2777',
   },
   {
     icon: Share2,
     title: 'Social Media Management',
-    desc: 'Scheduled, consistent posting with hashtag strategy, caption copywriting, and community engagement to grow your following.',
     color: '#ec4899',
   },
   {
     icon: BarChart3,
     title: 'Performance Analysis',
-    desc: 'Monthly reports with reach, engagement, and lead data. We iterate on what works and double down on what converts.',
     color: '#f43f5e',
   },
 ];
@@ -76,7 +70,7 @@ export default function HowWeWork() {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6">
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
@@ -112,10 +106,9 @@ export default function HowWeWork() {
                   </span>
                 </div>
 
-                <h3 className="text-white font-semibold text-lg mb-3 group-hover:gradient-text transition-all">
+                <h3 className="text-white font-semibold text-lg mb-1 group-hover:gradient-text transition-all">
                   {step.title}
                 </h3>
-                <p className="text-[#94a3b8] text-sm leading-relaxed">{step.desc}</p>
 
                 {/* Bottom accent line on hover */}
                 <div

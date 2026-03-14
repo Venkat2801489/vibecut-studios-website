@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { ArrowRight, Play, Sparkles, TrendingUp, Eye, Users } from 'lucide-react';
+import { ArrowRight, Play, TrendingUp, Eye, Users } from 'lucide-react';
 
 const heroWords = ['Captivating', 'Trending', 'Viral', 'Premium'];
 
@@ -68,13 +68,6 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left – Text */}
         <div className="text-center lg:text-left">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8">
-            <Sparkles size={13} className="text-[#7c3aed]" />
-            <span className="text-[#94a3b8] text-xs font-medium tracking-wide uppercase">
-              India&apos;s #1 Reels Production Agency
-            </span>
-          </div>
 
           <h1
             style={{ fontFamily: 'Syne, sans-serif' }}

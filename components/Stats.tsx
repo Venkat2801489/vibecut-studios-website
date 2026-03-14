@@ -48,7 +48,7 @@ function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) 
 
 export default function Stats() {
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative">
       {/* divider line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#7c3aed]/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ec4899]/30 to-transparent" />

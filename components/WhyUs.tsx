@@ -49,7 +49,7 @@ export default function WhyUs() {
   }, []);
 
   return (
-    <section id="why-us" ref={ref} className="py-24 relative overflow-hidden">
+    <section id="why-us" ref={ref} className="py-24 relative">
       <div className="orb orb-cyan w-[500px] h-[500px] top-0 right-[-200px] opacity-10" />
 
       <div className="max-w-7xl mx-auto px-6">

@@ -16,7 +16,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/5 pt-16 pb-8 overflow-hidden">
+    <footer className="relative border-t border-white/5 pt-16 pb-8">
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{ background: 'linear-gradient(90deg, transparent, #7c3aed, #ec4899, transparent)' }}

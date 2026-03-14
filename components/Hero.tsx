@@ -79,7 +79,7 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative min-h-fit lg:min-h-screen flex items-center justify-center overflow-x-hidden pt-32 pb-20 lg:pt-24 lg:pb-16">
+    <section className="relative min-h-fit lg:min-h-screen flex items-center justify-center pt-32 pb-20 lg:pt-24 lg:pb-16">
       {/* Background Orbs */}
       <div className="orb orb-purple w-[600px] h-[600px] top-[-200px] left-[-200px] opacity-40" />
       <div

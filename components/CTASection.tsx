@@ -3,10 +3,10 @@ import { ArrowRight, Calendar, Play, Sparkles } from 'lucide-react';
 
 export default function CTASection() {
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
+    <section id="contact" className="py-24 relative">
       <div className="max-w-5xl mx-auto px-6">
         <div
-          className="relative rounded-[32px] overflow-hidden p-12 sm:p-16 text-center"
+          className="relative rounded-[32px] p-12 sm:p-16 text-center"
           style={{
             background:
               'linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(15,15,26,0.8) 40%, rgba(236,72,153,0.2) 100%)',

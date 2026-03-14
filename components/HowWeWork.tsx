@@ -51,7 +51,7 @@ export default function HowWeWork() {
   }, []);
 
   return (
-    <section id="how-we-work" ref={ref} className="py-24 relative overflow-hidden">
+    <section id="how-we-work" ref={ref} className="py-24 relative">
       <div className="orb orb-purple w-[500px] h-[500px] top-0 right-0 opacity-10" />
 
       <div className="max-w-7xl mx-auto px-6">

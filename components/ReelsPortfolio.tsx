@@ -187,7 +187,7 @@ export default function ReelsPortfolio() {
   ][categoryIndex % 7];
 
   return (
-    <section id="portfolio" className="py-24 relative overflow-hidden bg-[#050508]">
+    <section id="portfolio" className="py-24 relative bg-[#050508]">
       {/* Dynamic Glow background */}
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full blur-[160px] opacity-10 pointer-events-none"

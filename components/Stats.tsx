@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 
 const stats = [
   { number: 5, suffix: 'M+', label: 'Total Views Generated' },
-  { number: 50, suffix: '+', label: 'Active Clients' },
-  { number: 7, suffix: '+', label: 'Industries Served' },
-  { number: 50, suffix: '+', label: 'Reels Produced' },
+  { number: 25, suffix: '+', label: 'Active Clients' },
+  { number: 15, suffix: '+', label: 'Industries Served' },
+  { number: 200, suffix: '', label: 'Reels Produced per Month' },
 ];
 
 function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) {

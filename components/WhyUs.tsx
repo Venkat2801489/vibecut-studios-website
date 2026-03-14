@@ -23,8 +23,8 @@ const features = [
   },
   {
     icon: Award,
-    title: 'Award-Worthy Production',
-    desc: 'Professional camera equipment, studio lighting, color grading, and sound design — the same quality you\'d expect from a premium studio.',
+    title: 'Full-Service Production',
+    desc: 'From scratch script to shoot and then post — we handle the entire creative pipeline so you can focus on running your business.',
     color: '#f59e0b',
   },
   {
@@ -32,12 +32,6 @@ const features = [
     title: 'Consistent & Timely Delivery',
     desc: 'We work on a strict content calendar. Your reels are scripted, shot, edited, and delivered on schedule — every single time.',
     color: '#10b981',
-  },
-  {
-    icon: BarChart2,
-    title: 'ROI-Focused Analytics',
-    desc: 'Every reel is a measurable investment. Monthly reports show reach, engagement, website clicks, and direct revenue attribution.',
-    color: '#f43f5e',
   },
 ];
 

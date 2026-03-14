@@ -208,7 +208,7 @@ export default function ReelsPortfolio() {
              Reels <span className="gradient-text">Portfolio</span>
           </h2>
           <p className="text-[#94a3b8] text-lg max-w-xl mx-auto leading-relaxed">
-            Scroll-stopping content across 7+ industries. Every reel is crafted to turn scrollers into clients.
+            Scroll-stopping content across 15+ industries. Every reel is crafted to turn scrollers into clients.
           </p>
         </div>
 

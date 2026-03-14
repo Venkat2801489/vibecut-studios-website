@@ -79,7 +79,7 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
+    <section className="relative min-h-fit lg:min-h-screen flex items-center justify-center overflow-x-hidden pt-32 pb-20 lg:pt-24 lg:pb-16">
       {/* Background Orbs */}
       <div className="orb orb-purple w-[600px] h-[600px] top-[-200px] left-[-200px] opacity-40" />
       <div
@@ -134,8 +134,8 @@ export default function Hero() {
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6">
             {[
               { icon: Eye, label: '5M+ Views', color: '#7c3aed' },
-              { icon: Users, label: '50+ Clients', color: '#ec4899' },
-              { icon: TrendingUp, label: '7 Industries', color: '#06b6d4' },
+              { icon: Users, label: '25+ Clients', color: '#ec4899' },
+              { icon: TrendingUp, label: '15 Industries', color: '#06b6d4' },
             ].map(({ icon: Icon, label, color }) => (
               <div key={label} className="flex items-center gap-2">
                 <Icon size={16} style={{ color }} />
@@ -159,6 +159,7 @@ export default function Hero() {
                   ref={videoRef}
                   src={featuredVideo.video_url}
                   loop
+                  autoPlay
                   muted={muted}
                   playsInline
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

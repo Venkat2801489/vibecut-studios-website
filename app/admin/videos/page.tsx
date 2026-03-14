@@ -31,6 +31,8 @@ export default function AdminVideosPage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [message, setMessage] = useState('');
 
+  const [editingVideoId, setEditingVideoId] = useState<string | null>(null);
+
   const fetchData = async () => {
     setLoading(true);
     const [vRes, cRes] = await Promise.all([
@@ -49,26 +51,45 @@ export default function AdminVideosPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch('/api/videos', {
-        method: 'POST',
+      const url = editingVideoId ? `/api/videos/${editingVideoId}` : '/api/videos';
+      const method = editingVideoId ? 'PUT' : 'POST';
+      
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
+
       if (res.ok) {
-        setMessage('Video uploaded successfully!');
+        setMessage(editingVideoId ? 'Video updated successfully!' : 'Video uploaded successfully!');
         setForm(emptyForm);
         setShowForm(false);
+        setEditingVideoId(null);
         fetchData();
         setTimeout(() => setMessage(''), 3000);
       } else {
         const d = await res.json();
-        setMessage(`Error: ${d.error || 'Upload failed'}`);
+        setMessage(`Error: ${d.error || 'Operation failed'}`);
       }
     } catch {
       setMessage('Network error.');
     } finally {
       setSaving(false);
     }
+  };
+
+  const startEdit = (video: Video) => {
+    setForm({
+      title: video.title,
+      category_id: video.category_id,
+      video_url: video.video_url,
+      thumbnail_url: video.thumbnail_url || '',
+      position: video.position,
+      is_featured: video.is_featured,
+    });
+    setEditingVideoId(video.id);
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleUpdate = async (id: string, changes: Partial<Video>) => {
@@ -116,7 +137,16 @@ export default function AdminVideosPage() {
             <RefreshCw size={18} />
           </button>
           <button
-            onClick={() => { setShowForm(!showForm); setMessage(''); }}
+            onClick={() => { 
+                if (showForm) {
+                    setShowForm(false);
+                    setEditingVideoId(null);
+                    setForm(emptyForm);
+                } else {
+                    setShowForm(true);
+                }
+                setMessage(''); 
+            }}
             className="btn-primary flex items-center gap-2 py-3 px-6 shadow-lg shadow-[#7c3aed]/20"
           >
             {showForm ? <X size={16} /> : <Plus size={16} />}
@@ -174,7 +204,7 @@ export default function AdminVideosPage() {
         </div>
       </div>
 
-      {/* Upload Form */}
+      {/* Upload/Edit Form */}
       {showForm && (
         <div className="glass-card p-8 mb-10 border border-[#7c3aed]/40 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
@@ -182,9 +212,9 @@ export default function AdminVideosPage() {
           </div>
           <h2 className="text-xl text-white font-bold mb-6 flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#7c3aed]/20 flex items-center justify-center">
-              <Upload size={18} className="text-[#7c3aed]" />
+              {editingVideoId ? <RefreshCw size={18} className="text-[#7c3aed]" /> : <Upload size={18} className="text-[#7c3aed]" />}
             </div>
-            New Reel Upload
+            {editingVideoId ? 'Edit Video Details' : 'New Reel Upload'}
           </h2>
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6 relative z-10">
             {/* Title */}
@@ -198,7 +228,7 @@ export default function AdminVideosPage() {
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 placeholder="e.g. Luxury Real Estate Tour - Mumbai"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed]/50 transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3.5 text-white focus:outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed]/50 transition-all font-medium"
               />
             </div>
 
@@ -296,7 +326,7 @@ export default function AdminVideosPage() {
             <div className="md:col-span-2 flex justify-end gap-3 mt-4">
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={() => { setShowForm(false); setEditingVideoId(null); setForm(emptyForm); }}
                 className="px-6 py-3 rounded-xl text-sm font-medium text-[#94a3b8] hover:text-white hover:bg-white/5 transition-all"
               >
                 Cancel
@@ -310,8 +340,8 @@ export default function AdminVideosPage() {
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    <Upload size={16} />
-                    Upload Reel
+                    {editingVideoId ? <RefreshCw size={16} /> : <Upload size={16} />}
+                    {editingVideoId ? 'Save Changes' : 'Upload Reel'}
                   </>
                 )}
               </button>
@@ -364,7 +394,7 @@ export default function AdminVideosPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {videos.map((video) => (
+          {filteredVideos.map((video) => (
             <div
               key={video.id}
               className="glass-card p-4 flex items-center gap-4 flex-wrap"
@@ -383,8 +413,8 @@ export default function AdminVideosPage() {
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <p className="text-white font-medium text-sm leading-tight truncate">{video.title}</p>
-                <p className="text-[#94a3b8] text-xs mt-1">
+                <p className="text-white font-bold text-sm leading-tight truncate">{video.title}</p>
+                <p className="text-[#94a3b8] text-xs mt-1 font-medium">
                   {video.category?.name || 'Unknown category'}
                 </p>
                 {video.video_url && (
@@ -392,7 +422,7 @@ export default function AdminVideosPage() {
                     href={video.video_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#7c3aed] text-xs flex items-center gap-1 mt-1 hover:underline"
+                    className="text-[#7c3aed] text-xs flex items-center gap-1 mt-1.5 hover:underline font-bold"
                   >
                     <Link size={10} />
                     View video
@@ -401,10 +431,10 @@ export default function AdminVideosPage() {
               </div>
 
               {/* Position badge */}
-              <div className="text-center">
-                <p className="text-[#94a3b8] text-[10px] uppercase mb-1">Position</p>
+              <div className="text-center px-2">
+                <p className="text-[#94a3b8] text-[9px] uppercase font-black tracking-tighter mb-1">Position</p>
                 <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm"
+                  className="w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm"
                   style={{ background: 'rgba(124,58,237,0.2)', color: '#7c3aed' }}
                 >
                   {video.position}
@@ -431,6 +461,18 @@ export default function AdminVideosPage() {
                   </button>
                 </div>
 
+                {/* Edit Button */}
+                <button
+                  onClick={() => startEdit(video)}
+                  className="p-2 rounded-xl bg-white/5 text-[#94a3b8] hover:text-[#7c3aed] hover:bg-[#7c3aed]/10 transition-all border border-white/5"
+                  title="Edit video info"
+                >
+                  <Plus size={15} className="rotate-45" style={{ transform: 'none' }} />
+                  {/* Using Plus rotated or just a pen icon, let's look for a better icon if possible, but Lucide has 'Edit' */}
+                  <span className="sr-only">Edit</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                </button>
+
                 {/* Featured toggle */}
                 <button
                   onClick={() => handleUpdate(video.id, { is_featured: !video.is_featured })}
@@ -444,23 +486,11 @@ export default function AdminVideosPage() {
                   {video.is_featured ? <Star size={15} fill="currentColor" /> : <StarOff size={15} />}
                 </button>
 
-                {/* Position input */}
-                <input
-                  type="number"
-                  min={1}
-                  max={10}
-                  value={video.position}
-                  onChange={(e) => {
-                    const pos = parseInt(e.target.value);
-                    if (pos >= 1 && pos <= 10) handleUpdate(video.id, { position: pos });
-                  }}
-                  className="w-12 bg-white/5 border border-white/10 rounded-xl text-center text-white text-sm py-1.5 focus:outline-none focus:border-[#7c3aed]"
-                />
-
                 {/* Delete */}
                 <button
                   onClick={() => handleDelete(video.id)}
                   className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-all"
+                  title="Delete video"
                 >
                   <Trash2 size={15} />
                 </button>

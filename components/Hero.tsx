@@ -1,6 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { ArrowRight, Play, TrendingUp, Eye, Users } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { ArrowRight, Play, TrendingUp, Eye, Users, Volume2, VolumeX } from 'lucide-react';
+import { Video } from '@/types';
 
 const heroWords = ['Captivating', 'Trending', 'Viral', 'Premium'];
 
@@ -9,6 +10,22 @@ export default function Hero() {
   const [displayWord, setDisplayWord] = useState(heroWords[0]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [charIndex, setCharIndex] = useState(heroWords[0].length);
+  const [featuredVideo, setFeaturedVideo] = useState<Video | null>(null);
+  const [muted, setMuted] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Fetch featured video
+    fetch('/api/videos?featured=true')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setFeaturedVideo(data[0]);
+        }
+      })
+      .catch((err) => console.error('Error fetching featured video:', err));
+  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -31,6 +48,25 @@ export default function Hero() {
     }, isDeleting ? 80 : 150);
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, wordIndex]);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMuted(!muted);
+  };
 
   const scrollTo = (id: string) => {
     document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -68,7 +104,6 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left – Text */}
         <div className="text-center lg:text-left">
-
           <h1
             style={{ fontFamily: 'Syne, sans-serif' }}
             className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.05] mb-6"
@@ -86,24 +121,16 @@ export default function Hero() {
             that stop the scroll, build brand authority, and drive real business growth.
           </p>
 
-          {/* CTAs */}
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-12">
-            <button
-              onClick={() => scrollTo('#portfolio')}
-              className="btn-primary flex items-center gap-2"
-            >
+            <button onClick={() => scrollTo('#portfolio')} className="btn-primary flex items-center gap-2">
               <Play size={16} fill="white" />
               View Our Work
             </button>
-            <button
-              onClick={() => scrollTo('#how-we-work')}
-              className="btn-secondary flex items-center gap-2"
-            >
+            <button onClick={() => scrollTo('#how-we-work')} className="btn-secondary flex items-center gap-2">
               Our Process <ArrowRight size={15} />
             </button>
           </div>
 
-          {/* Mini stats */}
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6">
             {[
               { icon: Eye, label: '5M+ Views', color: '#7c3aed' },
@@ -118,81 +145,116 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right – Floating Reel Cards */}
-        <div className="relative h-[380px] sm:h-[480px] lg:h-[520px] mt-12 lg:mt-0">
-          {/* Central large reel mockup */}
+        {/* Right – Interactive Featured Reel */}
+        <div className="relative h-[480px] sm:h-[580px] flex items-center justify-center mt-12 lg:mt-0">
           <div
-            className="glass-card absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-48 h-80 sm:w-56 sm:h-96 flex items-center justify-center overflow-hidden animate-pulse-glow"
-            style={{ borderRadius: '24px' }}
+            className="video-card neon-border group relative w-56 h-[380px] sm:w-64 sm:h-[430px] overflow-hidden shadow-2xl animate-pulse-glow"
+            style={{ borderRadius: '28px' }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#7c3aed]/30 to-[#ec4899]/30" />
-            <div className="relative z-10 text-center">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3 border border-white/20">
-                <Play size={24} fill="white" className="text-white ml-1" />
+            {featuredVideo?.video_url ? (
+              <>
+                <video
+                  ref={videoRef}
+                  src={featuredVideo.video_url}
+                  loop
+                  muted={muted}
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  poster={featuredVideo.thumbnail_url || undefined}
+                />
+                
+                {/* Overlay while not playing or on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 transition-opacity duration-300 ${hovered ? 'opacity-100' : 'opacity-80'}`}>
+                  {/* Top Film Marks */}
+                  <div className="absolute top-4 left-0 right-0 flex justify-between px-3">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-3.5 h-4 bg-white/10 rounded-sm" />
+                    ))}
+                  </div>
+                  
+                  {/* Bottom Film Marks */}
+                  <div className="absolute bottom-4 left-0 right-0 flex justify-between px-3">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-3.5 h-4 bg-white/10 rounded-sm" />
+                    ))}
+                  </div>
+
+                  {/* Audio Toggle */}
+                  <button
+                    onClick={toggleMute}
+                    className={`absolute bottom-6 right-6 z-20 w-10 h-10 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-300 border ${
+                      muted 
+                        ? 'bg-black/40 border-white/10 text-white/60 hover:text-white' 
+                        : 'bg-white/20 border-white/20 text-white scale-110 shadow-lg'
+                    } ${hovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                  >
+                    {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                  </button>
+
+                  {/* Play Indicator (Centered) */}
+                  {!hovered && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+                        <Play size={24} fill="white" className="text-white ml-1" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Featured Label */}
+                  <div className={`absolute bottom-8 left-0 right-0 text-center transition-transform duration-300 ${hovered ? 'translate-y-[-10px]' : 'translate-y-0'}`}>
+                    <p className="text-white/60 text-[10px] font-bold uppercase tracking-[0.2em]">Featured Reel</p>
+                    <p className="text-white font-bold text-sm mt-1 px-4 line-clamp-1">{featuredVideo.title}</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-[#7c3aed]/20 to-[#ec4899]/20 flex flex-col items-center justify-center p-6 text-center">
+                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4 border border-white/10 animate-pulse">
+                   <Play size={20} className="text-white/20" />
+                </div>
+                <p className="text-white/40 text-xs font-semibold uppercase tracking-widest">Awaiting Media</p>
               </div>
-              <p className="text-white/60 text-xs font-medium">Vibecut Studios</p>
-              <p className="text-white text-sm font-semibold mt-1">Featured Reel</p>
-            </div>
-            {/* Reel film frame marks */}
-            <div className="absolute top-3 left-0 right-0 flex justify-between px-2">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-3 h-4 bg-white/10 rounded-sm" />
-              ))}
-            </div>
-            <div className="absolute bottom-3 left-0 right-0 flex justify-between px-2">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-3 h-4 bg-white/10 rounded-sm" />
-              ))}
-            </div>
+            )}
           </div>
 
           {/* Floating category cards */}
-          {floatingReels.map((reel, i) => {
-            return (
-              <div
-                key={reel.category}
-                className="glass-card absolute px-4 py-3 text-sm font-medium"
-                style={{
-                  top: i === 0 ? '8%' : i === 1 ? '15%' : 'auto',
-                  bottom: i === 2 ? '10%' : 'auto',
-                  left: i === 0 ? '0' : i === 2 ? '5%' : 'auto',
-                  right: i === 1 ? '0' : 'auto',
-                  animation: `orb-float ${5 + i * 1.5}s ease-in-out infinite`,
-                  animationDelay: `${i * 1.2}s`,
-                  borderRadius: '14px',
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-2 h-2 rounded-full"
-                    style={{ background: reel.color, boxShadow: `0 0 10px ${reel.color}` }}
-                  />
-                  <span className="text-white text-xs font-semibold">{reel.category}</span>
-                </div>
-                <div className="flex items-center gap-1 mt-1">
-                  <Eye size={11} className="text-[#94a3b8]" />
-                  <span className="text-[#94a3b8] text-xs">{reel.views} views</span>
-                </div>
+          {floatingReels.map((reel, i) => (
+            <div
+              key={reel.category}
+              className="glass-card absolute px-4 py-3 text-sm font-medium z-10"
+              style={{
+                top: i === 0 ? '5%' : i === 1 ? '18%' : 'auto',
+                bottom: i === 2 ? '15%' : 'auto',
+                left: i === 0 ? '-10%' : i === 2 ? '0%' : 'auto',
+                right: i === 1 ? '-5%' : 'auto',
+                animation: `orb-float ${6 + i * 2}s ease-in-out infinite`,
+                animationDelay: `${i * 1.5}s`,
+                borderRadius: '16px',
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full" style={{ background: reel.color, boxShadow: `0 0 10px ${reel.color}` }} />
+                <span className="text-white text-xs font-semibold">{reel.category}</span>
               </div>
-            );
-          })}
+              <div className="flex items-center gap-1 mt-1.5">
+                <Eye size={11} className="text-[#94a3b8]" />
+                <span className="text-[#94a3b8] text-[10px] uppercase font-bold tracking-wider">{reel.views} views</span>
+              </div>
+            </div>
+          ))}
 
           {/* Decorative rings */}
-          <div
-            className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-64 h-64 rounded-full border border-white/5"
-            style={{ animation: 'orb-float 10s ease-in-out infinite' }}
-          />
-          <div
-            className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-80 h-80 rounded-full border border-white/[0.03]"
-            style={{ animation: 'orb-float 14s ease-in-out infinite reverse' }}
-          />
+          <div className="absolute w-[400px] h-[400px] rounded-full border border-white/5 animate-[orb-float_12s_ease-in-out_infinite]" />
+          <div className="absolute w-[550px] h-[550px] rounded-full border border-white/[0.02] animate-[orb-float_18s_ease-in-out_infinite_reverse]" />
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-        <span className="text-white/50 text-xs font-medium tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
+        <span className="text-white/40 text-[10px] font-black tracking-[0.3em] uppercase">Scroll</span>
+        <div className="w-[1px] h-10 bg-gradient-to-b from-white/40 to-transparent" />
       </div>
     </section>
   );

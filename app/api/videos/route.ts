@@ -2,34 +2,38 @@ import { NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase';
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const categorySlug = searchParams.get('category');
-  const categoryId = searchParams.get('category_id');
+    const { searchParams } = new URL(req.url);
+    const categorySlug = searchParams.get('category');
+    const categoryId = searchParams.get('category_id');
+    const featured = searchParams.get('featured');
 
-  try {
-    const supabase = createServiceClient();
-    if (!supabase) throw new Error('Supabase configuration missing');
-    let query = supabase
-      .from('videos')
-      .select('*, category:categories(*)')
-      .order('position')
-      .limit(10);
+    try {
+      const supabase = createServiceClient();
+      if (!supabase) throw new Error('Supabase configuration missing');
+      let query = supabase
+        .from('videos')
+        .select('*, category:categories(*)')
+        .order('position');
 
-    if (categoryId) {
-      query = query.eq('category_id', categoryId);
-    } else if (categorySlug) {
-      // Look up category by slug first
-      const { data: cat } = await supabase
-        .from('categories')
-        .select('id')
-        .eq('slug', categorySlug)
-        .single();
-      if (cat) query = query.eq('category_id', cat.id);
-    }
+      if (featured === 'true') {
+        query = query.eq('is_featured', true).limit(1);
+      } else if (categoryId) {
+        query = query.eq('category_id', categoryId).limit(10);
+      } else if (categorySlug) {
+        // Look up category by slug first
+        const { data: cat } = await supabase
+          .from('categories')
+          .select('id')
+          .eq('slug', categorySlug)
+          .single();
+        if (cat) query = query.eq('category_id', cat.id).limit(10);
+      } else {
+        query = query.limit(10);
+      }
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return NextResponse.json(data || []);
+      const { data, error } = await query;
+      if (error) throw error;
+      return NextResponse.json(data || []);
   } catch {
     return NextResponse.json([]);
   }

@@ -5,6 +5,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   try {
     const body = await req.json();
     const supabase = createServiceClient();
+    if (!supabase) throw new Error('Supabase configuration missing');
     const { data, error } = await supabase
       .from('videos')
       .update(body)
@@ -13,18 +14,21 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       .single();
     if (error) throw error;
     return NextResponse.json(data);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
 export async function DELETE(_: Request, { params }: { params: { id: string } }) {
   try {
     const supabase = createServiceClient();
+    if (!supabase) throw new Error('Supabase configuration missing');
     const { error } = await supabase.from('videos').delete().eq('id', params.id);
     if (error) throw error;
     return NextResponse.json({ success: true });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

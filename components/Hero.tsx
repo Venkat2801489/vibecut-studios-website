@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, Play, Sparkles, TrendingUp, Eye, Users } from 'lucide-react';
 
 const heroWords = ['Captivating', 'Trending', 'Viral', 'Premium'];
@@ -72,7 +72,7 @@ export default function Hero() {
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8">
             <Sparkles size={13} className="text-[#7c3aed]" />
             <span className="text-[#94a3b8] text-xs font-medium tracking-wide uppercase">
-              India's #1 Reels Production Agency
+              India&apos;s #1 Reels Production Agency
             </span>
           </div>
 
@@ -155,11 +155,6 @@ export default function Hero() {
 
           {/* Floating category cards */}
           {floatingReels.map((reel, i) => {
-            const positions = [
-              'top-8 left-4',
-              'top-12 right-2',
-              'bottom-8 left-8',
-            ];
             return (
               <div
                 key={reel.category}

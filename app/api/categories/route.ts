@@ -15,6 +15,7 @@ const demoCategories = [
 export async function GET() {
   try {
     const supabase = createServiceClient();
+    if (!supabase) throw new Error('Supabase configuration missing');
     const { data, error } = await supabase
       .from('categories')
       .select('*')
@@ -30,10 +31,12 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const supabase = createServiceClient();
+    if (!supabase) throw new Error('Supabase configuration missing');
     const { data, error } = await supabase.from('categories').insert(body).select().single();
     if (error) throw error;
     return NextResponse.json(data);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

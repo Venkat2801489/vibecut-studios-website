@@ -40,7 +40,7 @@ export default function CTASection() {
             Ready to Go <span className="gradient-text">Viral?</span>
           </h2>
           <p className="relative text-[#94a3b8] text-lg max-w-xl mx-auto mb-10">
-            Book a free 30-minute strategy call with our team. We'll analyze your brand, identify content opportunities, and map out your Reels growth plan.
+            Book a free 30-minute strategy call with our team. We&apos;ll analyze your brand, identify content opportunities, and map out your Reels growth plan.
           </p>
 
           <div className="relative flex flex-wrap gap-4 justify-center">

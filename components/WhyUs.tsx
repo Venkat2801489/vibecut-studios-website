@@ -69,7 +69,7 @@ export default function WhyUs() {
             Why <span className="gradient-text">Vibecut Studios?</span>
           </h2>
           <p className="text-[#94a3b8] text-lg max-w-2xl mx-auto">
-            We're not just a video agency. We're your brand's growth engine — built for the short-form video era.
+            We&apos;re not just a video agency. We&apos;re your brand&apos;s growth engine — built for the short-form video era.
           </p>
         </div>
 

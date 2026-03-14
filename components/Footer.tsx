@@ -9,15 +9,6 @@ const quickLinks = [
   { label: 'Book a Call', href: '#contact' },
 ];
 
-const industries = [
-  'Boutique & Fashion',
-  'Bridal Showrooms',
-  'Textiles & Sarees',
-  'Interior Design',
-  'Healthcare Clinics',
-  'Real Estate',
-  'Education',
-];
 
 export default function Footer() {
   const scrollTo = (href: string) => {
@@ -47,7 +38,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-[#94a3b8] text-sm leading-relaxed mb-5">
-              India's premium Instagram Reels production agency. We turn brands into content powerhouses.
+              India&apos;s premium Instagram Reels production agency. We turn brands into content powerhouses.
             </p>
             <div className="flex gap-3">
             </div>

@@ -14,15 +14,6 @@ const demoCategories: Category[] = [
   { id: '7', name: 'Education', slug: 'education', description: 'Learning & coaching brands', icon: '📚', drive_link: '#', display_order: 7, created_at: '' },
 ];
 
-const gradients = [
-  'from-purple-900/40 to-pink-900/40',
-  'from-pink-900/40 to-rose-900/40',
-  'from-violet-900/40 to-purple-900/40',
-  'from-blue-900/40 to-cyan-900/40',
-  'from-emerald-900/40 to-cyan-900/40',
-  'from-orange-900/40 to-pink-900/40',
-  'from-amber-900/40 to-orange-900/40',
-];
 
 interface VideoCardProps {
   index: number;
@@ -151,7 +142,6 @@ export default function ReelsPortfolio() {
   }, [activeCategory]);
 
   const categoryIndex = categories.findIndex((c) => c.id === activeCategory.id);
-  const gradientClass = gradients[categoryIndex % gradients.length];
   const accentColor = [
     '#7c3aed', '#ec4899', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#f43f5e',
   ][categoryIndex % 7];
@@ -246,7 +236,7 @@ export default function ReelsPortfolio() {
             style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}
           >
             {/* Real videos if available */}
-            {videos.map((video, i) => (
+            {videos.map((video) => (
               <div key={video.id} className="video-card neon-border group">
                 <div className="reel-aspect relative overflow-hidden rounded-2xl bg-black/40">
                   {video.thumbnail_url ? (

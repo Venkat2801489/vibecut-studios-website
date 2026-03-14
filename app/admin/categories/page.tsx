@@ -121,7 +121,7 @@ export default function AdminCategoriesPage() {
             </div>
             <div className="md:col-span-2">
               <label className="block text-[#94a3b8] text-xs font-medium mb-2 uppercase tracking-wider">
-                Google Drive Link (for "View More" button)
+                Google Drive Link (for &quot;View More&quot; button)
               </label>
               <input type="url" value={form.drive_link} onChange={(e) => setForm({ ...form, drive_link: e.target.value })} placeholder="https://drive.google.com/drive/folders/..." className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-[#7c3aed] transition-all" />
             </div>

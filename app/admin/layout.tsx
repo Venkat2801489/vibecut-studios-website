@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
-  LayoutDashboard, Video, Tag, Settings, LogOut, Play, Menu, X, ExternalLink,
+  LayoutDashboard, Video, Tag, LogOut, Play, Menu, ExternalLink,
 } from 'lucide-react';
 
 const navItems = [

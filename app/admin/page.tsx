@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Video, Tag, TrendingUp, Upload, ArrowUpRight, Play, Sparkles } from 'lucide-react';
+import { Video as VideoIcon, Tag, TrendingUp, Upload, ArrowUpRight, Play, Sparkles } from 'lucide-react';
+import { Video } from '@/types';
 import Link from 'next/link';
 
 interface Stats {
@@ -21,13 +22,13 @@ export default function AdminDashboardPage() {
       setStats({
         totalVideos: Array.isArray(videos) ? videos.length : 0,
         totalCategories: Array.isArray(cats) ? cats.length : 7,
-        featuredVideos: Array.isArray(videos) ? videos.filter((v: any) => v.is_featured).length : 0,
+        featuredVideos: Array.isArray(videos) ? videos.filter((v: Video) => v.is_featured).length : 0,
       });
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const statCards = [
-    { icon: Video, label: 'Total Videos', value: stats.totalVideos, color: '#7c3aed', href: '/admin/videos' },
+    { icon: VideoIcon, label: 'Total Videos', value: stats.totalVideos, color: '#7c3aed', href: '/admin/videos' },
     { icon: Tag, label: 'Categories', value: stats.totalCategories, color: '#06b6d4', href: '/admin/categories' },
     { icon: Sparkles, label: 'Featured Videos', value: stats.featuredVideos, color: '#ec4899', href: '/admin/videos' },
     { icon: TrendingUp, label: 'Max Per Category', value: 10, color: '#10b981', href: '/admin/videos' },

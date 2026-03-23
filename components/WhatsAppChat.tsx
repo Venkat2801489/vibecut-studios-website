@@ -42,9 +42,6 @@ export default function WhatsAppChat() {
     setIsOpen(false);
   };
 
-  const openWhatsAppDirectly = () => {
-    window.open(`https://wa.me/${phoneNumber}`, '_blank');
-  };
 
   return (
     <div className="fixed bottom-6 right-6 z-[9999] font-sans">
@@ -52,7 +49,7 @@ export default function WhatsAppChat() {
       {showTooltip && (
         <div className="absolute bottom-20 right-0 mb-2 w-max max-w-[200px] md:max-w-xs animate-bounce-subtle">
           <div className="bg-[#12121e]/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl text-white">
-            <p className="text-sm font-medium">👋 Hey there! Need help with your Instagram strategy? Let's chat on WhatsApp!</p>
+            <p className="text-sm font-medium">👋 Hey there! Need help with your Instagram strategy? Let&apos;s chat on WhatsApp!</p>
             <div className="absolute bottom-[-6px] right-6 w-3 h-3 bg-[#12121e] border-r border-b border-white/10 rotate-45"></div>
           </div>
         </div>
